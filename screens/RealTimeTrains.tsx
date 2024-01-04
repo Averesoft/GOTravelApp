@@ -3,28 +3,28 @@ import { StyleSheet} from 'react-native';
 import {Text, View} from 'react-native';
 import apiRequest from '../lib/apiRequest';
 
-const stations = JSON.parse(require("../GOTravelData/stations.json"));
-
-let trains: any;
-let [realTime, updateRealTime] = React.useState('Finding State')
-
 export default function RealTimeTrains() {
-  apiRequest("api/V1/ServiceataGlance/Trains/All", '', 'GET').then(res => {
+
+  let trains: any;
+  let [realTime, updateRealTime] = React.useState('Finding State')
+  apiRequest(`api/V1/ServiceataGlance/Trains/All`, '', 'GET').then(res => {
+   // console.log(res.success);
     if (res.success) {
       trains = JSON.parse(res.response);
-      console.log(trains);
-      if (trains && trains.Trips) {
+      //console.log(trains);
+      if (trains && trains.Trips && trains.Trips.Trip) {
         let displayed = ``;
-        for (let i = 0; i < trains.Trips.length; i++) {
-          displayed += `${trains.Trips[i].Display}\t | ${trains.Trips[i].NextStopCode}`
+        for (let i = 0; i < trains.Trips.Trip.length; i++) {
+          displayed += `${trains.Trips.Trip[i].Display}\t | ${trains.Trips.Trip[i].NextStopCode}`
         }
         updateRealTime(displayed);
       } else {
-        updateRealTime('No Trains Currently!');
+        updateRealTime(`No Trains Currently!`);
       }
     }
   }).catch(err => {
-    updateRealTime('Error occurred D:');
+   // console.log(err);
+    updateRealTime(`Error occurred D:`);
   })
   
   return (

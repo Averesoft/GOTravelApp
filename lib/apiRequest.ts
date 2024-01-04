@@ -1,6 +1,10 @@
+import Config from "react-native-config";
 export default function apiRequest(endpoint: string, body: string, method: string): Promise<ApiResponse> {
     return new Promise((resolve, reject) => {
-        fetch('http://api.openmetrolinx.com/OpenDataAPI/${endpoint}?key=${process.env.key.local.GOTRANSIT_KEY}',  {
+        const key = Config.GOTRANSIT_API_KEY;
+        console.log(key);
+        console.log(`http://api.openmetrolinx.com/OpenDataAPI/${endpoint}?key=${key}`);
+        fetch(`http://api.openmetrolinx.com/OpenDataAPI/${endpoint}?key=${key}`,  {
             method: method,
             headers: {
                 'Content-Type': 'application/json'
