@@ -2,16 +2,16 @@ import * as React from 'react';
 import { StyleSheet} from 'react-native';
 import {Text, View} from 'react-native';
 import apiRequest from '../lib/apiRequest';
+import Train from '../components/Train';
 
 export default function RealTimeTrains() {
 
   let trains: any;
   let [realTime, updateRealTime] = React.useState('Finding State')
+  
   apiRequest(`api/V1/ServiceataGlance/Trains/All`, '', 'GET').then(res => {
-   // console.log(res.success);
     if (res.success) {
       trains = JSON.parse(res.response);
-      //console.log(trains);
       if (trains && trains.Trips && trains.Trips.Trip) {
         let displayed = ``;
         for (let i = 0; i < trains.Trips.Trip.length; i++) {
@@ -23,7 +23,6 @@ export default function RealTimeTrains() {
       }
     }
   }).catch(err => {
-   // console.log(err);
     updateRealTime(`Error occurred D:`);
   })
   
@@ -33,8 +32,7 @@ export default function RealTimeTrains() {
 
       {/* --- COURSE TEXT --- */}
       <Text>{realTime}</Text>
-
-      {/* --- COURSE CONTAINER --- */}
+      <Train/>
       </View>
     </View>
   )
@@ -46,47 +44,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  /* --- BACKGROUND IMAGE --- */
-  backgroundImage: {
-    flex: 1,
-  },
-  /* ---------- WEATHER ---------- */
-
-  /* ---WEATHER CONTAINER ---*/
-  weatherContainer: {
-
-    position: "absolute",
-    right: 10,
-    top: 10,
-
-    backgroundColor: "transparent",
-    alignItems: "center",
-  },
-
-  /* ---TEMPERATURE ---*/
-  temperature: {
-    fontWeight: "bold",
-    fontSize: 35,
-    fontFamily: "poppins",
-  },
-
-  /* --- WEATHER DIVIDER --- */
-  weatherDivider: {
-    width: "90%",
-    borderWidth: 1,
-    marginBottom: 7,
-  },
-
-  /* ---TEMPERATURE LOGO ---*/
-  logo: {
-    width: 60,
-    height: 60,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    borderRadius: 20,
-  },
-
-  /*---------- MAIN INFO ----------*/
 
   course: {
     width: "90%",
@@ -103,9 +60,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  /*---------- TIME TABLE ----------*/
-
-  /* --- TIME TABLE CONTAINER --- */
   timeTableContainer: {
     backgroundColor: "transparent",
     position: "absolute",
@@ -113,7 +67,6 @@ const styles = StyleSheet.create({
     bottom: 10,
   },
 
-  /* --- COURSE CONTAINER --- */
   courseContainer: {
     backgroundColor: "transparent",
     borderColor: "rgb(58, 106, 150)",
@@ -121,14 +74,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  /* --- WEEK TEXT --- */
   weekText: {
     fontSize: 40,
     fontWeight: "bold",
     fontFamily: "poppins",
   },
 
-  /* --- COURSE TEXT --- */
   courseText: {
     marginVertical: 5,
     marginLeft: 10,
